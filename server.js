@@ -46,6 +46,18 @@ const userSchema={
 
 
 }
+const straySchema={
+name:String,
+contact:String,
+longitude:String,
+latitude:String,
+address:String,
+img:{
+    data:Buffer,
+    contentType:String
+}
+
+}
 // shleter schema contains of name contact address image 
 const shelterSchema={
 
@@ -72,14 +84,11 @@ const donateSchema={
         data: Buffer,
         contentType: String
     },
-    orderStatus: [{
-        status: { type: String, enum: ["Awaiting Quotation", "Quotation Accepted", "Placed", "Accepted", "Confirmed", "Edited", "Payment Pending", "Out for Delivery", "Delivered", "Rejected", "Cancelled"], default: "Placed" },
-        updatedAt: { type: Date, default: Date.now },
-      }],
+    orderstatus:[String]
 
 
 }
-
+const Stray=mongoose.model('Stray',straySchema);
 const Donate=mongoose.model('Donate',donateSchema);
 const User=mongoose.model('User',userSchema);
 const Shelter=mongoose.model('Shelter',shelterSchema);
@@ -88,26 +97,41 @@ app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static('public'));
 app.get("/", function (req, res) {
-    
-    const options = {
-        method: 'GET',
-        url: 'https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/',
-        params: {ip: ip1},
-        headers: {
-          'X-RapidAPI-Key': '919ad1b4efmsh5c64063fdf57b2ap1ecd82jsn8b07ec302f85',
-          'X-RapidAPI-Host': 'ip-geolocation-ipwhois-io.p.rapidapi.com'
-        }
-      };
-      
-      axios.request(options).then(function (response) {
-          console.log(response.data.latitude);
-          console.log(response.data.longitude);
-
-      }).catch(function (error) {
-          console.error(error);
-      });
+    res.render("home");
   });
+app.get("/form",(req,res)=>{
+    res.render("form");
+})
+app.get('/community',(req,res)=>{
+    res.render('community');
+})
+app.get('/upload',(req,res)=>{
+    res.render('upload');
+})
+app.get('/donation',(req,res)=>{
+    res.render('donation');
+})
+app.get("/nearmap",(req,res)=>{
+Shelter.find({},(err,data)=>{
+    if(err){
+        console.log(err);
+    }
+    else{
+        res.render("nearmap",{data:data});
+    }
+})
+});
+app.get("/ngo",(req,res)=>{
+    res.render("ngo");
 
+
+})
+app.get("/paw",(req,res)=>{
+    res.render("paw");
+})
+app.get("/register",(req,res)=>{
+    res.render("register");
+})
 app.post('/send',async (req,res)=>{
     var options =await fast2sms.sendMessage( {authorization : 'Uom7yaq1ZvkwIfxHT3lAjK6D9zdVGMRNSJeQtFYgEB8s5X0pWceoP0Xbx3Q9vLsZq2HKdRpcDB4wmFrG', message : 'heelo' ,  numbers : [req.body.contact]} )
     res.send(options)
@@ -165,13 +189,25 @@ cb(null,file.fieldname+"-"+Date.now())
 	}
 });
 var upload=multer({storage: storage5})
-
+app.get('/help',(req,res)=>{
+    Stray.find({},(err,data)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.render("helpus",{data:data});
+        }
+    
+})
+});
 app.post('/uploadshelter',upload.single('image'),(req,res,next)=>{
     var obj=new Shelter({
         name:req.body.name,
         contact:req.body.contact,
         address:req.body.address,
+        pincode:req.body.pincode,
         img:{
+
 			data:fs.readFileSync(path.join(__dirname+'/uploads/'+req.file.filename)),
 		contentType:'image/png'
 		}
@@ -194,7 +230,8 @@ cb(null,file.fieldname+"-"+Date.now())
 	}
 });
 var upload=multer({storage: storage6})
-app.post('/uploaddonate',(req,res)=>{
+app.post('/uploaddonate',upload.single('image'),(req,res,next)=>{
+    
     var obj=new Donate({
         name:req.body.name,
         contact:req.body.contact,
@@ -203,12 +240,91 @@ app.post('/uploaddonate',(req,res)=>{
         img:{
             data:fs.readFileSync(path.join(__dirname+'/upload1/'+req.file.filename)),
         contentType:'image/png'
-        }
+        },
+       
+        orderstatus:['placed']
+       //push obj to orderstatus
+
+
     })
     obj.save();
    // node mailer to notify ngo like
 })
+var storage7=multer.diskStorage({
+	destination:(req,file,cb)=>{
+		cb(null,'upload2')
+	},
+	filename:(req,file,cb)=>{
+cb(null,file.fieldname+"-"+Date.now())
+	}
+});
+var upload=multer({storage: storage7})
+app.get('/org',(req,res)=>{
+  Donate.find({},(err,data)=>{
 
+    if(err){
+        console.log(err);
+    }
+    else{
+        res.render("org",{data:data});
+    }
+})
+})
+app.post('/uploadstray',upload.single('image'),(req,res,next)=>{
+    if(req.body.address===""){
+        const options = {
+            method: 'GET',
+            url: 'https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/',
+            params: {ip: ip1},
+            headers: {
+              'X-RapidAPI-Key': '919ad1b4efmsh5c64063fdf57b2ap1ecd82jsn8b07ec302f85',
+              'X-RapidAPI-Host': 'ip-geolocation-ipwhois-io.p.rapidapi.com'
+            }
+          };
+          
+          axios.request(options).then(function (response) {
+            var obj=new Stray({
+                name:req.body.name,
+                contact:req.body.contact,
+                longitude:response.data.longitude,
+                latitude:response.data.latitude,
+                img:{
+                    data:fs.readFileSync(path.join(__dirname+'/upload2/'+req.file.filename)),
+                contentType:'image/png'
+                }
+            })
+            obj.save();
+            if(obj){
+                return res.json({
+                    message:'Stray Uploaded Successfully'
+                })
+            }
+    
+          }).catch(function (error) {
+              console.error(error);
+          });
+          
+    }
+    var obj=new Stray({
+        name:req.body.name,
+        contact:req.body.contact,
+        address:req.body.address,
+        img:{
+            data:fs.readFileSync(path.join(__dirname+'/upload2/'+req.file.filename)),
+        contentType:'image/png'
+        }
+    })
+    obj.save();
+    if(obj){
+        return res.json({
+            message:'Stray Uploaded Successfully'
+        })
+    }
+
+    
+   // node mailer to notify ngo like
+
+})
 app.get('/location',(re,res)=>{
     
   var apiCall = unirest("GET",
@@ -228,19 +344,15 @@ apiCall.end(function(result) {
 app.post('/updatestatus',(req,res)=>{
     const status=req.body.status;
     
-    Donate.findOneAndUpdate({
-     _id:req.body.id
-    }, {
-        $push: {
-            orderStatus: {
-                status: status,
-            }
-        }
-    }, {
-        new: true,
-        upsert: true
-    }).sort({ updatedAt: -1 });
+Donate.findOneAndUpdate({_id:req.body.id},{$set:{orderstatus:status}},(err,data)=>{
+    if(err){
+        console.log(err);
+    }
+    else{
+        res.send(data);
+    }
 })
+});
 
 
 app.listen(80,(req,res)=>{

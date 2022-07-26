@@ -60,13 +60,27 @@
     background-color:#F3E9DC;
 
 }
+.button4{
 
+    color:black;
+    background-color: white;
+    width: 5%;
+   
+}
+.button2{
+  background-color: black;
+  color: white
+}
 .grid-container {
   display: grid;
   gap: 50px 50px;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto;
   
   padding: 10px;
+}
+.col-sm-6{
+    text-align: justify !important;
+
 }
 
 .grid-item {
@@ -77,19 +91,22 @@
   text-align: center;
   height: auto;
   width: 100%;
+  margin-top: 5%;
 }
-.header{
-        font-family: 'Poppins';
-        font-weight: 600;
-        font-size: 48px;
-        text-align: center;
-        padding-top: 2%;
-      }
-      .image{
-    padding-top: 5%;
-    padding-left: 2%;
-    padding-right: 2%;
-   width: 98%;
+.image{
+    padding: 5%;
+   width: 100%;
+}
+.center{
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  height: auto;
+  margin-top: 5%;
+}
+.text12{
+    padding-top: 10% !important;
 }
       </style>
   </head>
@@ -108,16 +125,16 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left:20% !important;">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">I need you</a>
+              <a class="nav-link active" aria-current="page" href="/help">I need you</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Find a Home</a>
+              <a class="nav-link active" aria-current="page" href="/nearmap">Find a Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Community</a>
+              <a class="nav-link active" aria-current="page" href="/community">Community</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Donate</a>
+              <a class="nav-link active" aria-current="page" href="/donation">Donate</a>
             </li>
 
           </ul>
@@ -129,29 +146,48 @@
       </div>
     </nav>
     <hr style="height:12px;">
-   <p class="header"> Top Shelters</p>
-   <div class="grid-container container">
-    <div class="grid-item">
-        <img src="dogs1.png" alt="" class="image" >
-        <h5 style="margin-top: 4%;">Name: <br> Location: </h5>
-        <button style="background-color: black !important;color:white !important;font-size: 16px;padding:3%">Chat Now</button>
-    </div>
-    <div class="grid-item">
-        <img src="dogs1.png" alt="" class="image" >
-        <h5 style="margin-top: 4%;">Name: <br> Location: </h5>
-        <button style="background-color: black !important;color:white !important;font-size: 16px;padding:3%">Chat Now</button>
-    </div>
-    <div class="grid-item">
-        <img src="dogs1.png" alt="" class="image" >
-        <h5 style="margin-top: 4%;">Name: <br> Location: </h5>
-        <button style="background-color: black !important;color:white !important;font-size: 16px;padding:3%">Chat Now</button>
-    </div> 
-  </div>
-  <div class="container">
-  <p class="header" style="text-align: justify;">Community Chat</p>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-  <button class="btn btn-outline-success" type="submit">Sign in to chat to the community</button>
-</div>
+    <img src="pet2.png" alt="" class="center" >
+    <!-- name:String,
+    contact:String,
+    address:String,
+    pincode:String,
+    donatingItem:String,
+    img:
+    {
+        data: Buffer,
+        contentType: String
+    },
+    orderstatus:[String] -->
+    <div class="grid-container container" style="margin-top: 5%;">
+      <% data.forEach(function(item){ %>
+
+
+        
+        <div class="grid-item">
+            <div class="container text-center">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <img src="data:image/<%=item.img.contentType%>;base64,
+                    <%=item.img.data.toString('base64')%>" class="image">
+                  </div>
+                  <div class="col-sm-6 text12">
+                    
+                    <h5 style="margin-top: 4%;">Name:<%=item.name%> <br> Address: <%=item.address%>  <br> Product: <%=item.donatingItem%></h5>
+                    <form action="/updatestatus" method="post">
+                      <input type="hidden" value="<%=item._id%>"  name="id">
+                    <input type="text" name="status" style="width: 50px;">
+                    <button style="background-color: black !important;color:white !important;font-size: 16px;padding:3%">Update</button>
+                    </form>
+                  </div>
+                  
+                  
+                </div>
+              </div>
+        </div>
+    <% }) %>
+        
+      </div>
+   
 
     
     <div class="container-fluid">

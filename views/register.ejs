@@ -6,7 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body> <!-- name:String,
+    contact:String,
+    address:String,
+    pincode:String,
+    img:
+    {
+        data: Buffer,
+        contentType: String
+    } -->
     
     <form action="/uploadshelter" method="POST" enctype="multipart/form-data">
         <div class="form-group">
@@ -14,7 +22,9 @@
           <input type="text" name="name" id="name" placeholder="First and Last" required minlength="3" maxlength="25" />
         </div>
     
-        <input type="number" name="pincode">
+        <input type="number" name="contact">
+        <input type="text" name="address">
+        <input type="text" name="pincode">
         <div class="form-group">
           <input type="file" id="image"
                  name="image" value="" required>

@@ -9,8 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oleo+Script&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
     <style media="screen">
       body{
         background-color:#F3E9DC;
@@ -24,82 +24,40 @@
         padding: 0 !important;
         margin: 0 !important;
       }
+      
+   
 .footer{
   text-align: center;
   margin-top: 1%;
   margin-bottom: 1%;
 }
-.header{
-    padding-top: 4%;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    font-size: 64px;
-}
-input {
-display: none;
-}
-
-label {
-width: 300px;
-height: 200px;
-padding: 15px;
-
-border: 2px solid black;
-border-radius: 5px;
-
-color: black;
-
+.center12{
 display: flex;
-flex-direction: column;
-justify-content: center;
 align-items: center;
-gap: 10px;
-
-cursor: pointer;
+}
+.grid-container {
+  display: grid;
+  gap: 50px 50px;
+  grid-template-columns: auto auto;
+  
+  padding: 10px;
 }
 
-label:hover {
-background-color: #ede7f6;
+.grid-item {
+  
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  font-size: 30px;
+  text-align: center;
+  height: auto;
+  width: 100%;
 }
-
-ion-icon {
-font-size: 24px;
+.image{
+    padding-top: 5%;
+    padding-left: 2%;
+    padding-right: 2%;
+   width: 98%;
 }
-
-span {
-max-width: 100%;
-
-font-family: sans-serif;
-font-size: 20px;
-text-align: center;
-text-overflow: ellipsis;
-white-space: nowrap;
-overflow: hidden;
-}
-
-button {
-appearance: none;
-padding: 8px;
-width: 300px;
-background-color: black;
-border: none;
-border-radius: 5px;
-
-color: #ede7f6;
-font-family: sans-serif;
-font-size: 16px;
-
-cursor: pointer;
-}
-
-button:hover {
-color: #fff;
-
-}
-
-
-
-      
 
       </style>
   </head>
@@ -118,16 +76,16 @@ color: #fff;
         <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left:20% !important;">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">I need you</a>
+              <a class="nav-link active" aria-current="page" href="/help">I need you</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Find a Home</a>
+              <a class="nav-link active" aria-current="page" href="/nearmap">Find a Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Community</a>
+              <a class="nav-link active" aria-current="page" href="/community">Community</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Donate</a>
+              <a class="nav-link active" aria-current="page" href="/donation">Donate</a>
             </li>
 
           </ul>
@@ -139,37 +97,44 @@ color: #fff;
       </div>
     </nav>
     <hr style="height:12px;">
-    <div class="container">
-        <p class="header">Fill out this form and save a life :)</p>
-        <div class="container-fluid text-center">
-            <div class="row">
-              <div class="col-sm-4">
-                <label for="input" id="label">
-                    <ion-icon name="cloud-upload-outline"></ion-icon>
-                    <span id="span">Upload your photo here</span>
-                    <input id="input" type="file" accept="image/*" capture="camera" name="file">
-                  
-                  </label>
-              </div>
-              <div class="col-sm-8">
-                Column
-              </div>
-              
-            </div>
-          </div>
-    </div>
-    
-    
-    
-    
-   
-    
-    
-   
 
-    <hr style="margin-top: 4% !important;">
+    <div style="text-align: center;margin-left: 46%;padding-top: 3%;padding-bottom: 3%;" class="center12">
+    <ul class="nav nav-pills mb-3 " id="pills-tab" role="tablist"  >
+        <li class="nav-item" role="presentation" style="text-align: center;">
+          <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" style="text-align: center;">Dog</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Cat</button>
+        </li>
+        
+      </ul>
+    </div>
+    <div class="grid-container container">
+
+              <% data.forEach(function(item){ %>
+
+
+                <div class="grid-item">
+                  <img src="data:image/<%=item.img.contentType%>;base64,
+                  <%=item.img.data.toString('base64')%>" class="image">
+                    <h5 style="margin-top: 4%;">Name:<%=item.name%>  </h5>
+                    <h5>contact:<%=item.contact%>  </h5>
+                 <%   if(item.address==null) { %>
+                   <h5> <a href="http://www.google.com/maps/place/'+<%=item.latitude%>+','+<%=item.longitude%>'" target="_blank">Google Maps</a></h5>
+                  <% } else { %>
+                    <h5>Address:<%=item.address%> </h5>
+                  <% } %>
+                  </div>
+                <% }) %>
+               
+              </div>
+      
+        
+
+    
+    
     <div class="container-fluid">
-       
+        <hr style="margin-top: 4% !important;">
 
      <div class="container-fluid footer" >
       <img src="insta.png" alt=""  width="50px" style="margin-right: 3%;">
