@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <form action="/uploadshelter" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" name="name" id="name" placeholder="First and Last" required minlength="3" maxlength="25" />
+        </div>
+    
+        <input type="number" name="pincode">
+        <div class="form-group">
+          <input type="file" id="image"
+                 name="image" value="" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="submit"><i class="far fa-paper-plane"></i>Send</button>
+        </div>
+      </form>
+</body>
+</html>
