@@ -78,7 +78,10 @@
   
   padding: 10px;
 }
-
+a{
+  text-decoration: none;
+   
+}
 .grid-item {
   
   border: 1px solid rgba(0, 0, 0, 0.8);
@@ -104,7 +107,7 @@
 
         </a>
 
-        <a class="navbar-brand" href="#" style="font-family: 'Oleo Script', cursive;font-size: 1.8rem;">Paws Hunger</a>
+        <a class="navbar-brand" href="/" style="font-family: 'Oleo Script', cursive;font-size: 1.8rem;">Paws Hunger</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -135,7 +138,7 @@
     <div class="container button">
       <!-- <a href="/paw"> -->
         <button class="button1 button3" style="width: 20;">
-         <a href="/paw" style="text-decoration: none;"> Find the nearest shelter via Maps</a></button>
+         <a href="/paw" style="text-decoration: none; color:black !important;"> Find the nearest shelter via Maps</a></button>
         <!-- </a> -->
         <button class="button2 button3">Check out the list of shelters</button>
     </div>
@@ -155,12 +158,12 @@
         <div class="grid-item">
           <img src="data:image/<%=item.img.contentType%>;base64,
           <%=item.img.data.toString('base64')%>" class="image">
-            <h5 style="margin-top: 4%;">Name:<%=item.name%> <br> Location:<%=item.address%> </h5>
-            <br>
-            <h5>Contact:<%=item.contact%> <br> Pincode:<%=item.pincode%> </h5>
+            <h5 style="margin-top: 4%;">Name: <%=item.name%> <br> Location: <%=item.address%> </h5>
+            
+            <h5>Contact: <%=item.contact%> <br> Pincode: <%=item.pincode%> </h5>
 
 
-            <button style="background-color: black !important;color:white !important;font-size: 16px;padding:3%"><a href="https://paw-hunger.glitch.me"> Chat Now</a></button>
+            <button style="background-color: black !important;font-size: 16px;padding:3%"><a href="https://paw-hunger.glitch.me" style="color:white !important;"> Chat Now</a></button>
         </div>
        <% }) %>
 

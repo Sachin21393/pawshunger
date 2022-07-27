@@ -305,6 +305,9 @@ app.post('/uploadstray',upload.single('image'),(req,res,next)=>{
           });
           
     }
+    else{
+
+    
     var obj=new Stray({
         name:req.body.name,
         contact:req.body.contact,
@@ -320,7 +323,7 @@ app.post('/uploadstray',upload.single('image'),(req,res,next)=>{
             message:'Stray Uploaded Successfully'
         })
     }
-
+}
     
    // node mailer to notify ngo like
 

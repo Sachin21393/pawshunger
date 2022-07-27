@@ -81,6 +81,78 @@
   margin-top: 1%;
   margin-bottom: 1%;
 }
+:active, :hover, :focus {
+  outline: 0!important;
+  outline-offset: 0;
+}
+::before,
+::after {
+  position: absolute;
+  content: "";
+}
+
+.btn-holder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 10px auto 35px;
+}
+.btn {
+  position: relative;
+  display: inline-block;
+  width: auto; height: auto;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin: 0px 25px 15px;
+  min-width: 150px;
+}
+  .btn span {         
+    position: relative;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    top: 0; left: 0;
+    width: 100%;
+    padding: 15px 20px;
+    transition: 0.3s;
+  }
+  .btn.hover-border-2::before,
+.btn.hover-border-2::after {
+  width: 10%; height: 25%;
+  transition: 0.35s;
+}
+.btn.hover-border-2::before {
+  bottom: 0; left: 0;
+  border-left: 1px solid rgb(28, 31, 30);
+  border-bottom: 1px solid rgb(28, 31, 30);
+}
+.btn.hover-border-2::after {
+  top: 0; right: 0;
+  border-right: 1px solid rgb(28, 31, 30);
+  border-top: 1px solid rgb(28, 31, 30);
+}
+.btn.hover-border-2:hover::before,
+.btn.hover-border-2:hover::after {
+  width: 99%;
+  height: 99%;
+}
+.btn-3 {
+  padding: 5px;
+}
+.btn-3 span {
+  color: rgb(255, 255, 255);
+  background-color: rgb(54, 56, 55);
+}
+.btn-3::before,
+.btn-3::after {
+  background: transparent;
+  z-index: 2;
+}
+
       
 
       </style>
@@ -93,7 +165,7 @@
 
         </a>
 
-        <a class="navbar-brand" href="#" style="font-family: 'Oleo Script', cursive;font-size: 1.8rem;">Paws Hunger</a>
+        <a class="navbar-brand" href="/" style="font-family: 'Oleo Script', cursive;font-size: 1.8rem;">Paws Hunger</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -131,9 +203,13 @@
           <div class="container" >
           <img src="home.png" alt="" class="responsive">
         </div>
-          <p class="intro-para" >We provide a platform for everyone to be able to give back to their stray best friends in a simple, time-saving way while getting recognized for it with certificates and more.</p>
-         <a href="/form"><button class="btn btn-outline-success" type="submit">Register a stray</button></a>
-        <button class="btn btn-outline-success" type="submit">Adopt and Help</button>
+          <p class="intro-para" >We provide a platform for everyone to be able to give back to their stray best friends in a simple, time-saving way while getting recognized for it with certificates and more.</p><br>
+         <a href="/form"> 
+         <button class="btn btn-3 hover-border-2">
+         <span>REGISTER A STRAY</span>
+         </button>
+        </a>
+        <button class="btn btn-3 hover-border-2" type="submit"> <span>Adopt and Help</span> </button>
         </div>
         
         <div class="col-sm-6 intro-right">
