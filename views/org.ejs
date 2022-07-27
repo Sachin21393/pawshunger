@@ -172,11 +172,11 @@
                   </div>
                   <div class="col-sm-6 text12">
                     
-                    <h5 style="margin-top: 4%;">Name:<%=item.name%> <br> Address: <%=item.address%>  <br> Product: <%=item.donatingItem%></h5>
+                    <h5 style="margin-top: 4%;text-align: left !important;">Name: <%=item.name%> <br><br>  Address: <%=item.address%>  <br><br> Product: <%=item.donatingItem%> </h5>
                     <form action="/updatestatus" method="post">
-                      <input type="hidden" value="<%=item._id%>"  name="id">
-                    <input type="text" name="status" style="width: 50px;">
-                    <button style="background-color: black !important;color:white !important;font-size: 16px;padding:3%">Update</button>
+                    <input type="hidden" value="<%=item._id%>"  name="id">
+                    <input type="text" name="status" style="width: 150px;">
+                    <button style="background-color: black !important;color:white !important;font-size: 20px;padding:3%;margin-top: -1%;">Update</button>
                     </form>
                   </div>
                   
