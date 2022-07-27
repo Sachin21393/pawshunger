@@ -136,12 +136,12 @@ app.get("/paw",(req,res)=>{
 app.get("/register",(req,res)=>{
     res.render("register");
 })
-app.post('/send',async (req,res)=>{
-    var options =await fast2sms.sendMessage( {authorization : 'Uom7yaq1ZvkwIfxHT3lAjK6D9zdVGMRNSJeQtFYgEB8s5X0pWceoP0Xbx3Q9vLsZq2HKdRpcDB4wmFrG', message : 'heelo' ,  numbers : [req.body.contact]} )
-    res.send(options)
-    console.log(options)
+app.get('/sign',(req,res)=>{
+    res.render('signup');
 })
-
+app.get('/home1',(req,res)=>{
+    res.render('home1');
+})
 app.post('/userRegister',(req,res)=>{
     console.log(req.body);
     const user=new User({
@@ -154,9 +154,7 @@ app.post('/userRegister',(req,res)=>{
 
     user.save();
 
-    return res.json({
-        message:'User Registered Successfully'
-    });
+    res.redirect('/home1')
 
 
 })
@@ -221,7 +219,7 @@ app.post('/uploadshelter',upload.single('image'),(req,res,next)=>{
         if(cd){
             var client=new twilio(accountSid,authToken);
     client.messages.create({
-        body:"Hello jugal sir,we have a new shelter in your area.Please help us to find stray dogs "+req.body.name,
+        body:"Hello ${cd.name},we have a new shelter in your area.Please help us to find stray dogs "+req.body.name,
         to:`+91${cd.contact}`,
         from:"+18148460647"
     },(err,message)=>{
@@ -333,7 +331,6 @@ app.post('/uploadstray',upload.single('image'),(req,res,next)=>{
         })
     }
 }
-
     
    // node mailer to notify ngo like
 
