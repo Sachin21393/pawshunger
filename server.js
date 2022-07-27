@@ -14,6 +14,9 @@ const dns=require('dns');
 var satelize = require('satelize');
 var geoip = require('geoip-lite');
 const axios = require("axios");
+var twilio=require('twilio');   
+var accountSid = "ACce0260cf664cb5c2857b125fabd3a3ab"; // Your Account SID from www.twilio.com/console
+var authToken ="5bc6571e2aabcf50c24790c1eb0443ef"; 
 var ip1="";
 dns.lookup('www.geeksforgeeks.org', 
 (err, addresses, family) => {
@@ -126,6 +129,7 @@ app.get("/ngo",(req,res)=>{
 
 
 })
+
 app.get("/paw",(req,res)=>{
     res.render("paw");
 })
@@ -215,9 +219,17 @@ app.post('/uploadshelter',upload.single('image'),(req,res,next)=>{
     obj.save();
     User.findOne({pincode:req.body.pincode}, async (er,cd)=>{
         if(cd){
-            console.log(cd.contact)
-            var options =await fast2sms.sendMessage( {authorization : "Uom7yaq1ZvkwIfxHT3lAjK6D9zdVGMRNSJeQtFYgEB8s5X0pWceoP0Xbx3Q9vLsZq2HKdRpcDB4wmFrG", message : 'heelo' ,  numbers : ['7738872498']} )
-          res.send(options)
+            var client=new twilio(accountSid,authToken);
+    client.messages.create({
+        body:"Hello jugal sir,we have a new shelter in your area.Please help us to find stray dogs "+req.body.name,
+        to:`+91${cd.contact}`,
+        from:"+18148460647"
+    },(err,message)=>{
+        console.log(message.sid);
+    }
+    )
+
+
         }
     })
 });
@@ -304,7 +316,7 @@ app.post('/uploadstray',upload.single('image'),(req,res,next)=>{
               console.error(error);
           });
           
-    }
+    }else{
     var obj=new Stray({
         name:req.body.name,
         contact:req.body.contact,
@@ -320,6 +332,7 @@ app.post('/uploadstray',upload.single('image'),(req,res,next)=>{
             message:'Stray Uploaded Successfully'
         })
     }
+}
 
     
    // node mailer to notify ngo like
@@ -349,6 +362,15 @@ Donate.findOneAndUpdate({_id:req.body.id},{$set:{orderstatus:status}},(err,data)
         console.log(err);
     }
     else{
+        var client=new twilio(accountSid,authToken);
+        client.messages.create({
+            body:`Hello ${data.name} `+ ",we have a update on your pick up order "+req.body.status+" is your current status",
+            to:`+91${data.contact}`,
+            from:"+18148460647"
+        },(err,message)=>{
+            console.log(message.sid);
+        }
+        )
         res.send(data);
     }
 })
