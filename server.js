@@ -14,10 +14,14 @@ const dns=require('dns');
 var satelize = require('satelize');
 var geoip = require('geoip-lite');
 const axios = require("axios");
+const dotenv = require("dotenv")
 var twilio=require('twilio');   
 var accountSid = "ACce0260cf664cb5c2857b125fabd3a3ab"; // Your Account SID from www.twilio.com/console
 var authToken ="5bc6571e2aabcf50c24790c1eb0443ef"; 
 var ip1="";
+
+dotenv.config({path : "./config.env"})
+
 dns.lookup('www.geeksforgeeks.org', 
 (err, addresses, family) => {
   
@@ -49,7 +53,9 @@ ip.v4()
 // server.listen(PORT, () => {
 //   console.log(`Server is running on port ${PORT}`);
 // });
-mongoose.connect('mongodb://localhost:27017/PawshungerDB',{useNewUrlParser:true});
+const DB = process.env.DB_connections
+console.log(DB);
+mongoose.connect("mongodb+srv://surajchavan19:SachinJugalSuraj@cluster0.wo3ec.mongodb.net/Pawhunger",{useNewUrlParser:true});
 const userSchema={
     name:String,
     email:String,
