@@ -15,21 +15,21 @@ var satelize = require('satelize');
 var geoip = require('geoip-lite');
 const axios = require("axios");
 const dotenv = require("dotenv")
-var twilio=require('twilio');   
+var twilio=require('twilio');
 var accountSid = "ACce0260cf664cb5c2857b125fabd3a3ab"; // Your Account SID from www.twilio.com/console
-var authToken ="5bc6571e2aabcf50c24790c1eb0443ef"; 
+var authToken ="5bc6571e2aabcf50c24790c1eb0443ef";
 var ip1="";
 
 dotenv.config({path : "./config.env"})
 
-dns.lookup('www.geeksforgeeks.org', 
+dns.lookup('www.geeksforgeeks.org',
 (err, addresses, family) => {
-  
+
     // Print the address found of user
     console.log('addresses:', addresses);
     ip1=addresses;
-  
-    // Print the family found of user  
+
+    // Print the family found of user
     console.log('family:', family);
 });
 
@@ -53,8 +53,8 @@ ip.v4()
 // server.listen(PORT, () => {
 //   console.log(`Server is running on port ${PORT}`);
 // });
-const DB = process.env.DB_connections
-console.log(DB);
+
+
 mongoose.connect("mongodb+srv://surajchavan19:SachinJugalSuraj@cluster0.wo3ec.mongodb.net/Pawhunger",{useNewUrlParser:true});
 const userSchema={
     name:String,
@@ -77,7 +77,7 @@ img:{
 }
 
 }
-// shleter schema contains of name contact address image 
+// shleter schema contains of name contact address image
 const shelterSchema={
 
     name:String,
@@ -116,7 +116,7 @@ app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static('public'));
 app.get("/", function (req, res) {
-   
+
     res.render("home");
   });
 app.get("/form",(req,res)=>{
@@ -216,7 +216,7 @@ app.get('/help',(req,res)=>{
         else{
             res.render("helpus",{data:data});
         }
-    
+
 })
 });
 app.post('/uploadshelter',upload.single('image'),(req,res,next)=>{
@@ -258,7 +258,7 @@ cb(null,file.fieldname+"-"+Date.now())
 });
 var upload=multer({storage: storage6})
 app.post('/uploaddonate',upload.single('image'),(req,res,next)=>{
-    
+
     var obj=new Donate({
         name:req.body.name,
         contact:req.body.contact,
@@ -268,7 +268,7 @@ app.post('/uploaddonate',upload.single('image'),(req,res,next)=>{
             data:fs.readFileSync(path.join(__dirname+'/upload1/'+req.file.filename)),
         contentType:'image/png'
         },
-       
+
         orderstatus:['placed']
        //push obj to orderstatus
 
@@ -308,7 +308,7 @@ app.post('/uploadstray',upload.single('image'),(req,res,next)=>{
               'X-RapidAPI-Host': 'ip-geolocation-ipwhois-io.p.rapidapi.com'
             }
           };
-          
+
           axios.request(options).then(function (response) {
             console.log("long",response.data.longitude)
             console.log("lat",response.data.latitude)
@@ -329,11 +329,11 @@ app.post('/uploadstray',upload.single('image'),(req,res,next)=>{
                     message:'Stray Uploaded Successfully'
                 })
             }
-    
+
           }).catch(function (error) {
               console.error(error);
           });
-          
+
     }else{
     var obj=new Stray({
         name:req.body.name,
@@ -351,12 +351,12 @@ app.post('/uploadstray',upload.single('image'),(req,res,next)=>{
         })
     }
 }
-    
+
    // node mailer to notify ngo like
 
 })
 app.get('/location',(re,res)=>{
-    
+
   var apiCall = unirest("GET",
   "https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/"
 );
@@ -373,7 +373,7 @@ apiCall.end(function(result) {
 
 app.post('/updatestatus',(req,res)=>{
     const status=req.body.status;
-    
+
 Donate.findOneAndUpdate({_id:req.body.id},{$set:{orderstatus:status}},(err,data)=>{
     if(err){
         console.log(err);
@@ -395,7 +395,7 @@ Donate.findOneAndUpdate({_id:req.body.id},{$set:{orderstatus:status}},(err,data)
 })
 });
 
-
-app.listen(80,(req,res)=>{
+const port = 80 || process.env.PORT
+app.listen(port,(req,res)=>{
     console.log('Server is running on port 80');
 })
