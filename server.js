@@ -29,6 +29,16 @@ dns.lookup('www.geeksforgeeks.org',
     console.log('family:', family);
 });
 
+var ip = require('what-is-my-ip-address');
+var ip2="";
+ip.v4()
+  .then((ip) => {
+    console.log(ip);
+    ip2=ip;
+  })
+  .catch((error) => {
+    // Do you have IP v4?
+  });
 // const requestListener = function (req, res) {
 //   res.end("Your IP Addresss is: " + req.socket.localAddress);
 // };
@@ -100,6 +110,7 @@ app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static('public'));
 app.get("/", function (req, res) {
+   
     res.render("home");
   });
 app.get("/form",(req,res)=>{
@@ -219,7 +230,7 @@ app.post('/uploadshelter',upload.single('image'),(req,res,next)=>{
         if(cd){
             var client=new twilio(accountSid,authToken);
     client.messages.create({
-        body:"Hello ${cd.name},we have a new shelter in your area.Please help us to find stray dogs "+req.body.name,
+        body:`Hello ${cd.name}` +",we have a new shelter in your area.Please help us to find stray dogs "+req.body.name,
         to:`+91${cd.contact}`,
         from:"+18148460647"
     },(err,message)=>{
@@ -293,6 +304,9 @@ app.post('/uploadstray',upload.single('image'),(req,res,next)=>{
           };
           
           axios.request(options).then(function (response) {
+            console.log("long",response.data.longitude)
+            console.log("lat",response.data.latitude)
+
             var obj=new Stray({
                 name:req.body.name,
                 contact:req.body.contact,
@@ -368,7 +382,9 @@ Donate.findOneAndUpdate({_id:req.body.id},{$set:{orderstatus:status}},(err,data)
             console.log(message.sid);
         }
         )
-        res.send(data);
+        return res.json({
+            message:'Status Updated Successfully'
+        })
     }
 })
 });
